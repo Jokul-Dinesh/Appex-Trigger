@@ -1,0 +1,29 @@
+trigger AccountHighestOpportunity on Opportunity (After insert, After update,After Delete, After Undelete) 
+{
+    Map <Id,Account> Accmap = new map<Id, Account>([Select Id, High_Opp_Amount__c From Account]);
+    List <Account> Acclst = new List<Account>();
+    List<Opportunity> opplst = Trigger.new;
+    //system.debug(Opplst);
+    for(Opportunity Opp : Opplst)
+    {
+        If(Opp.AccountId != null )
+        {
+            system.debug(Opp.AccountId);
+            system.debug(Accmap.get((Opp.AccountId)).High_Opp_Amount__c);
+            // system.debug(Opp);
+            //system.debug(Opp.amount);
+            //system.debug(Opp.Account.High_Opp_Amount__c);
+            If(Opp.amount > (Accmap.get((Opp.AccountId)).High_Opp_Amount__c))
+            //If(Opp.amount > Opp.Account.High_Opp_Amount__c)
+            {
+                
+                Account Acc = (Accmap.get(Opp.AccountId));
+                system.debug(Acc);
+                Acc.High_Opp_Amount__c = Opp.amount;
+                system.debug(Acc);
+                Acclst.add (Acc);
+            }
+        }   
+    }
+    Update Acclst;
+}   
