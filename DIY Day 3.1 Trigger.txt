@@ -1,3 +1,6 @@
+//Prevent deletion of account record if it has a parent record associated with it
+
+
 trigger AccountTrigger on Account (before delete) 
 {
     switch on Trigger.OperationType
