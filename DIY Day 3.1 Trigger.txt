@@ -1,0 +1,18 @@
+trigger AccountTrigger on Account (before delete) 
+{
+    switch on Trigger.OperationType
+    {
+        when BEFORE_DELETE
+        {
+            for (Account acc: Trigger.old)
+            {
+               list<Contact> lstcontact = [select id, name from contact where contact.accountId =: acc.Id];
+                if (lstcontact.size() != 0)
+                {
+                     acc.addError('Unable to delete parent record'); 
+                } 
+            }
+        }
+        
+    }
+}

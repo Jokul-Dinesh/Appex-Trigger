@@ -1,0 +1,30 @@
+trigger EmployeeTrigger on Employee__c (after Delete)
+{
+    
+    switch on trigger.Operationtype 
+    {
+        when AFTER_DELETE
+        {
+            List<Account> ACClist = new List <Account>();
+            Map<Id, Employee__c> Empmap =Trigger.oldmap;
+            Id AccountId;
+            for(Id ID : Empmap.keyset())
+            {
+                list<Employee__c> Emplst = [ Select id, Name,Account__r.id from Employee__c 
+                                            where Account__c =: empmap.get(ID).Account__c ];
+                
+                system.debug(empmap.get(ID).Account__c);
+                AccountId = empmap.get(ID).Account__c;
+                system.debug(Emplst.size());
+                
+                if (Emplst.size() == 0)
+                {
+                    Account Acc = [select id , Name, Active__c from Account where id =: AccountId ];
+                    system.debug(Acc);
+                    Acc.Active__c = 'No'; 
+                    Acclist.add(Acc);
+                    system.debug(Acc);
+                }}
+            update AccList;
+        }
+    }}
