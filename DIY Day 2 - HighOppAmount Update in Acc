@@ -1,3 +1,6 @@
+//High opportunity value update in account object
+
+
 trigger AccountHighestOpportunity on Opportunity (After insert, After update,After Delete, After Undelete) 
 {
     Map <Id,Account> Accmap = new map<Id, Account>([Select Id, High_Opp_Amount__c From Account]);
