@@ -1,3 +1,6 @@
+//When all employee records deleted set acount active status as False
+
+
 trigger EmployeeTrigger on Employee__c (after Delete)
 {
     
